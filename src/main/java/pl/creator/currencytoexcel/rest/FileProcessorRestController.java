@@ -13,6 +13,10 @@ public class FileProcessorRestController {
     @Autowired
     FileProcessorService fileProcessorService;
 
+    /**
+     * @param fileName it's name file by user request
+     * @return String title Excel file and sheet
+     */
     @PostMapping(path = "/file/{fileName}")
     public ResponseEntity<String> createNewExcelFile(@PathVariable("fileName") String fileName){
         FileProcessor file = fileProcessorService.createNewFileProcessor();
@@ -22,6 +26,10 @@ public class FileProcessorRestController {
         return ResponseEntity.ok().body(fromJson);
     }
 
+    /**
+     * @param file instance FileProcessor class
+     * @return decode (fromJson) String Excel file title nad sheet
+     */
     private String prepareExcelToPrintTitle(FileProcessor file) {
         XSSFWorkbook xssfWorkbook = file.getWorkbook();
         String encodeWorkbookToString = file.encodeWorkbookToString(xssfWorkbook);

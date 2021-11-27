@@ -46,6 +46,10 @@ public class FileProcessor implements FileAction {
         return workbook;
     }
 
+    /**
+     * @param workbook exists Excel file created by user
+     * @return String encode workbook file
+     */
     @Override
     public String encodeWorkbookToString(XSSFWorkbook workbook) {
         workbookToString = "";
@@ -59,6 +63,10 @@ public class FileProcessor implements FileAction {
         return workbookToString;
     }
 
+    /**
+     * @param encode
+     * @return
+     */
     @Override
     public String readFromJson(String encode) {
         String fromJson = "";
