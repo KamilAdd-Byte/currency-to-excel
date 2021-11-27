@@ -1,7 +1,9 @@
 package pl.creator.currencytoexcel.filecreated.actions;
 
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public interface FileAction {
-    Workbook createNewExcelFile(String fileName);
+    XSSFWorkbook createNewExcelFile(String fileName);
+    String encodeWorkbookToString(XSSFWorkbook workbook);
+    String readFromJson(String encode);
 }

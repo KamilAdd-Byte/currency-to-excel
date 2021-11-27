@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 @Slf4j
 @SpringBootTest
 class FileProcessorTest {
@@ -20,11 +21,12 @@ class FileProcessorTest {
     }
 
     @Test
-    @DisplayName("should set a name for fileProcessor class")
-    void shouldSetNameForFileProcessorClass() {
+    @DisplayName("should set a name for fileProcessor fileName field")
+    void shouldSetNameForFileProcessorFileName() {
         //given
-        FileProcessor file = createNewFile();
-        log.info("Created new file " + file.getFileName());
+        FileProcessor file = createNewFileProcessor();
+        file.setFileName("test_name");
+        log.info("Created new fileProcessor and set fields fileName: " + file.getFileName());
         //then
         assertNotNull(file);
         assertThat(file.getFileName()).as("Set a name file for class fileProcessor is correct").isEqualTo("test_name");
@@ -33,26 +35,50 @@ class FileProcessorTest {
 
 
     @Test
-    @DisplayName("should user create new excel file with name+.xslx")
-    void shouldUserCreateNewExcelFileWithName() {
+    @DisplayName("should user create new excel file and name file it's name sheet workbook")
+    void shouldUserCreateNewExcelFileWithNameInFileProcessorClass() {
         //given
-        FileProcessor file = createNewFile();
+        FileProcessor file = getProcessor();
         //when
-        Workbook excel_new_file = file.createNewExcelFile("Excel_new_file");
-        log.info("About excel file: " + excel_new_file.toString());
-        Workbook workbook = file.getWorkbook();
-        log.info("Workbook in class: " + workbook.toString());
-
+        XSSFWorkbook fileWorkbook = file.getWorkbook();
+        log.info("About excel file: " + fileWorkbook.toString());
         //then
-        assertNotNull(excel_new_file);
-        assertThat(file.getWorkbook()).isEqualTo(workbook);
-       // assertThat(excel_new_file.getName(file.getName())).isEqualTo(file.getName());
+        assertNotNull(fileWorkbook);
+        assertThat(file.getWorkbook()).isEqualTo(fileWorkbook);
+        assertThat(fileWorkbook.getSheetAt(0).getSheetName()).isEqualTo("excel");
     }
 
-    private FileProcessor createNewFile() {
+    private FileProcessor getProcessor() {
         FileProcessor file = new FileProcessor();
-        file.setFileName("test_name");
-        file.setWorkbook(new XSSFWorkbook());
+        file.createNewExcelFile("excel");
+        return file;
+    }
+
+    @Test
+    @DisplayName("should encode workbook to string")
+    void shouldEncodeWorkbookToString() {
+        //given
+        FileProcessor file = getProcessor();
+        XSSFWorkbook workbook = file.getWorkbook();
+        String encodeWorkbookToString = file.encodeWorkbookToString(workbook);
+        log.info("Encode workbook: " + encodeWorkbookToString);
+    }
+
+    @Test
+    @DisplayName("should read from json")
+    void shouldReadFromJson() {
+        FileProcessor file = createNewFileProcessor();
+        XSSFWorkbook workbook = file.getWorkbook();
+        String encodeWorkbookToString = file.encodeWorkbookToString(workbook);
+        log.info("Encode workbook: " + encodeWorkbookToString);
+        String readFromJson = file.readFromJson(encodeWorkbookToString);
+        log.info("Decode from Json: " + readFromJson);
+    }
+
+    private FileProcessor createNewFileProcessor() {
+        FileProcessor file = new FileProcessor();
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        file.setWorkbook(workbook);
         return file;
     }
 }
