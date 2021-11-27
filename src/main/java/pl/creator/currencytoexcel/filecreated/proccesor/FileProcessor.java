@@ -14,11 +14,11 @@ import java.io.IOException;
 @Setter
 public class FileProcessor implements FileAction {
     private Workbook workbook;
-    private String name;
+    private String fileName;
 
-    public FileProcessor(Workbook workbook, String name) {
+    public FileProcessor(Workbook workbook, String fileName) {
         this.workbook = workbook;
-        this.name = name;
+        this.fileName = fileName;
     }
 
     /**
