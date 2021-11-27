@@ -3,16 +3,16 @@ package pl.creator.currencytoexcel.filecreated.proccesor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.poi.ss.usermodel.Workbook;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.creator.currencytoexcel.filecreated.actions.FileAction;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 
+@Slf4j
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,11 +33,15 @@ public class FileProcessor implements FileAction {
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
         workbook = new XSSFWorkbook();
-        try (FileOutputStream fileOutput = new FileOutputStream(fileName+".xslx")){
-            workbook.createSheet(fileName);
-            workbook.write(fileOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (fileName.toCharArray().length!=0){
+            try (FileOutputStream fileOutput = new FileOutputStream(fileName+".xslx")){
+                workbook.createSheet(fileName);
+                workbook.write(fileOutput);
+                log.info("Workbook created successfully");
+            } catch (IOException e) {
+                log.info("Workbook not created");
+                e.printStackTrace();
+            }
         }
         return workbook;
     }
@@ -65,6 +69,6 @@ public class FileProcessor implements FileAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return fromJson;
+        return "Create a new Excel file: " + fromJson;
     }
 }
