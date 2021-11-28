@@ -1,10 +1,12 @@
 package pl.creator.currencytoexcel.connect;
 
+import lombok.Getter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+@Getter
 public class WebClient {
     private static URL basicUrl;
     private static URLConnection urlConnection;
@@ -13,7 +15,7 @@ public class WebClient {
         try {
             basicUrl = new URL(url);
             return basicUrl;
-        } catch (MalformedURLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         throw new MalformedURLException();
@@ -21,8 +23,8 @@ public class WebClient {
 
     public static URLConnection openConnection (URL url) throws MalformedURLException {
         try {
-            url = new URL(url.getPath());
-            return url.openConnection();
+            urlConnection = basicUrl.openConnection();
+            return urlConnection;
         } catch (IOException e) {
             e.printStackTrace();
         }
