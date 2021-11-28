@@ -19,11 +19,11 @@ class NbpWebClientTest {
         //given
         NbpWebClient nbpWebClient = new NbpWebClient();
         String urlCurrencyByCode = nbpWebClient.setUrlLastTenRatesForCurrencyByCode("USD");
-        String nbpUrl = nbpWebClient.getNbpUrl();
+
         //when
         URL url = UrlConnection.setURLToOpenConnection(urlCurrencyByCode);
         //then
-        assertThat(nbpUrl).isEqualTo(urlCurrencyByCode);
+
         //assured
         when()
                 .get(url)

@@ -8,7 +8,7 @@ import java.net.URLConnection;
 @FunctionalInterface
 public interface UrlConnection {
 
-    String url ();
+    String url();
 
     static URL setURLToOpenConnection(String url) throws MalformedURLException {
         return new URL(url);

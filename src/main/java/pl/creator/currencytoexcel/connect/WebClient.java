@@ -15,11 +15,6 @@ public class WebClient implements UrlConnection {
     public WebClient() { }
 
 
-    @Override
-    public String url() {
-        return url;
-    }
-
     public static URL setURL (String url) throws MalformedURLException {
         try {
             basicUrl = new URL(url);
@@ -28,6 +23,11 @@ public class WebClient implements UrlConnection {
             e.printStackTrace();
         }
         throw new MalformedURLException();
+    }
+
+    @Override
+    public String url() {
+        return url;
     }
 
     public static URLConnection openConnection (URL url) throws MalformedURLException {
