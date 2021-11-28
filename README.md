@@ -12,4 +12,10 @@ RestAssured
 
 /file/{fileName}/{code}
 
+## next step
+
+- format row 
+- transfer service for file processor to currency convert
+
+
 
