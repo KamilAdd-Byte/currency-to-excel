@@ -5,23 +5,43 @@ import pl.creator.currencytoexcel.connect.UrlConnection;
 import pl.creator.currencytoexcel.currency.NbpWebClient;
 import pl.creator.currencytoexcel.currency.model.CurrencyDto;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * This class preparing CurrencyDto to write Excel file
+ */
 public class CurrencyConvert extends NbpWebClient {
-    private String jsonLine = "";
     private static Gson gson;
     private BufferedReader reader;
 
+    /**
+     * @param code it's currency code standard ISO 4217
+     * @return open connection for nbp api last top ten for one currency
+     * @throws IOException valid connection
+     * @see UrlConnection interface
+     */
     public static URLConnection openConnection(String code) throws IOException {
-        String urlByCode = setUrlLastTenRatesForCurrencyByCode(code);
-        URL urlToOpenConnection = UrlConnection.setURLToOpenConnection(urlByCode);
-        return UrlConnection.openConnection(urlToOpenConnection);
+        try {
+            String urlByCode = setUrlLastTenRatesForCurrencyByCode(code);
+            URL urlToOpenConnection = UrlConnection.setURLToOpenConnection(urlByCode);
+            return UrlConnection.openConnection(urlToOpenConnection);
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        throw new FileNotFoundException();
     }
 
+    /**
+     * @param connection open connection for nbp api last top ten for one currency
+     * @return converting CurrencyDto from JSON
+     */
     public CurrencyDto convertCurrencyFromJson (URLConnection connection){
+        String jsonLine = "";
         CurrencyDto currencyDto = null;
         gson = new Gson();
         try {
