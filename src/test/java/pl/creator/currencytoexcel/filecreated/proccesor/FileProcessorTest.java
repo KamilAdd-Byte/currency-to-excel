@@ -1,7 +1,6 @@
 package pl.creator.currencytoexcel.filecreated.proccesor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

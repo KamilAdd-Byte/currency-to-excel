@@ -7,15 +7,24 @@ import java.net.URL;
 import java.net.URLConnection;
 
 @Getter
-public class WebClient {
+public class WebClient implements UrlConnection {
+    private static String url = "";
     private static URL basicUrl;
     private static URLConnection urlConnection;
+
+    public WebClient() { }
+
+
+    @Override
+    public String url() {
+        return url;
+    }
 
     public static URL setURL (String url) throws MalformedURLException {
         try {
             basicUrl = new URL(url);
             return basicUrl;
-        } catch (IOException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         throw new MalformedURLException();
