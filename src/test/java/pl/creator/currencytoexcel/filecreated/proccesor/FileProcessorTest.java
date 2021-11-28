@@ -29,7 +29,7 @@ class FileProcessorTest {
         //then
         assertNotNull(file);
         assertThat(file.getFileName()).as("Set a name file for class fileProcessor is correct").isEqualTo("test_name");
-        assertThat(file.getFileName()).as("Set a name file for class fileProcessor is not correct").isNotEqualTo("test_name.xslx");
+        assertThat(file.getFileName()).as("Set a name file for class fileProcessor is not correct").isNotEqualTo("test_name.xlsx");
     }
 
 

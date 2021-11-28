@@ -4,8 +4,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.creator.currencytoexcel.currency.gson.CurrencyConvert;
+import pl.creator.currencytoexcel.currency.model.CurrencyDto;
 import pl.creator.currencytoexcel.filecreated.proccesor.FileProcessor;
 import pl.creator.currencytoexcel.filecreated.service.FileProcessorService;
+import pl.creator.currencytoexcel.workbook.CurrencyPatternWorkbook;
+
+import java.io.IOException;
+import java.net.URLConnection;
 
 @RestController
 public class FileProcessorRestController {
@@ -17,13 +23,17 @@ public class FileProcessorRestController {
      * @param fileName it's name file by user request
      * @return String title Excel file and sheet
      */
-    @PostMapping(path = "/file/{fileName}")
-    public ResponseEntity<String> createNewExcelFile(@PathVariable("fileName") String fileName){
-        FileProcessor file = fileProcessorService.createNewFileProcessor();
-        XSSFWorkbook excelFile = fileProcessorService.createNewExcelFile(fileName);
-        file.setWorkbook(excelFile);
-        String fromJson = prepareExcelToPrintTitle(file);
-        return ResponseEntity.ok().body(fromJson);
+    @PostMapping(path = "/file/{fileName}/{code}")
+    public ResponseEntity<CurrencyDto> createNewExcelFile(@PathVariable("fileName") String fileName,@PathVariable("code") String code) throws IOException {
+        CurrencyConvert currencyConvert = new CurrencyConvert();
+        URLConnection urlConnection = CurrencyConvert.openConnection(code);
+        CurrencyDto currencyDto = currencyConvert.convertCurrencyFromJson(urlConnection);
+        CurrencyPatternWorkbook currencyPatternWorkbook = new CurrencyPatternWorkbook();
+        currencyPatternWorkbook.setCurrencyDto(currencyDto);
+        XSSFWorkbook newExcelFile = currencyPatternWorkbook.createNewExcelFile(fileName);
+        currencyPatternWorkbook.setWorkbook(newExcelFile);
+
+        return ResponseEntity.ok().body(currencyDto);
     }
 
     /**
@@ -33,7 +43,6 @@ public class FileProcessorRestController {
     private String prepareExcelToPrintTitle(FileProcessor file) {
         XSSFWorkbook xssfWorkbook = file.getWorkbook();
         String encodeWorkbookToString = file.encodeWorkbookToString(xssfWorkbook);
-        String fromJson = file.readFromJson(encodeWorkbookToString);
-        return fromJson;
+        return file.readFromJson(encodeWorkbookToString);
     }
 }

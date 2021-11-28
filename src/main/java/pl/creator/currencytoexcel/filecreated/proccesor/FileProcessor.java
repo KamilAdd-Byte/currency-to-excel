@@ -4,12 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import pl.creator.currencytoexcel.currency.gson.CurrencyConvert;
+import pl.creator.currencytoexcel.currency.model.CurrencyDto;
 import pl.creator.currencytoexcel.filecreated.actions.FileAction;
+import pl.creator.currencytoexcel.workbook.CurrencyPatternWorkbook;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.Base64;
 
 @Slf4j
@@ -34,7 +42,7 @@ public class FileProcessor implements FileAction {
     public XSSFWorkbook createNewExcelFile(String fileName) {
         workbook = new XSSFWorkbook();
         if (fileName.toCharArray().length!=0){
-            try (FileOutputStream fileOutput = new FileOutputStream(fileName+".xslx")){
+            try (FileOutputStream fileOutput = new FileOutputStream(fileName+".xlsx")){
                 workbook.createSheet(fileName);
                 workbook.write(fileOutput);
                 log.info("Workbook created successfully");
@@ -44,6 +52,12 @@ public class FileProcessor implements FileAction {
             }
         }
         return workbook;
+    }
+
+    private CurrencyDto getCurrency() throws IOException {
+        CurrencyConvert currencyConvert = new CurrencyConvert();
+        URLConnection connection = CurrencyConvert.openConnection("eur");
+        return currencyConvert.convertCurrencyFromJson(connection);
     }
 
     /**
