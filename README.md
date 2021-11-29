@@ -3,10 +3,12 @@
 Spring boot v2.4.0-SNAPSHOT
 
 Apache POI
-Gson
+RestTemplate
 
 AssertJ
 RestAssured
+
+Swagger
 
 ## endpoint ready to use
 
