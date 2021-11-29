@@ -2,7 +2,6 @@ package pl.creator.currencytoexcel.currency.model;
 
 import lombok.Getter;
 import pl.creator.currencytoexcel.currency.RatesDto;
-
 import java.util.List;
 
 @Getter

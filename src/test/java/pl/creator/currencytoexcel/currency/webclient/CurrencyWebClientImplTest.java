@@ -3,33 +3,31 @@ package pl.creator.currencytoexcel.currency.webclient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.webclient.impl.CurrencyWebClientImpl;
-
 import java.lang.reflect.Field;
-import java.util.Arrays;
-
 import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
+@SpringBootTest
 class CurrencyWebClientImplTest {
 
-    CurrencyWebClientImpl currencyWebClient;
+    CurrencyWebClientImpl currencyWebClient = new CurrencyWebClientImpl();
 
     @Test
     @DisplayName("should get currency to rest template by nbp api")
     void shouldGetCurrencyDtoToRestTemplate(){
+
         //given
-        currencyWebClient = new CurrencyWebClientImpl();
-        //when
         CurrencyDto eur = currencyWebClient.getCurrencyLastTen("EUR");
         Class<CurrencyWebClientImpl> currencyWebClientClass = CurrencyWebClientImpl.class;
         Field[] declaredFields = currencyWebClientClass.getDeclaredFields();
 
         //then
+        assertNotNull(eur);
         assertThat(eur.getCode()).isEqualTo("EUR");
         assertThat(declaredFields).hasSize(6);
     }
@@ -45,5 +43,17 @@ class CurrencyWebClientImplTest {
                 .get(urlUsd)
                 .then()
                 .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("should get currency after set code to lower case")
+    void shouldGetCurrencyAfterSetCodeToLowerCase(){
+        //given
+        CurrencyDto currencyLowerCase = currencyWebClient.getCurrencyLastTen("eur");
+
+        //then
+        assertNotNull(currencyLowerCase);
+        assertThat(currencyLowerCase.getCode()).isEqualTo("EUR");
+        assertThat(currencyLowerCase.getCode()).isNotEqualTo("eur");
     }
 }

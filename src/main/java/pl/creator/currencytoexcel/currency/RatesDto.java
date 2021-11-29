@@ -9,9 +9,9 @@ import lombok.*;
 public class RatesDto {
     private String no;
     private String effectiveDate;
-    private String mid;
+    private double mid;
 
-    public RatesDto(String no, String effectiveDate, String mid) {
+    public RatesDto(String no, String effectiveDate, double mid) {
         this.no = no;
         this.effectiveDate = effectiveDate;
         this.mid = mid;

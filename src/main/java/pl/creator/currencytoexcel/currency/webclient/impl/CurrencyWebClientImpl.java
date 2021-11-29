@@ -25,7 +25,7 @@ public class CurrencyWebClientImpl implements CurrencyWebClient {
     public CurrencyDto getCurrencyLastTen(String code) {
         if (code.length()==3){
             NbpTopRatesForCurrencyDto nbpTopRatesForCurrencyDto = restTemplate.getForObject(BASIC_NBP_URL + TABLE +
-                    code + LAST_TOP_10, NbpTopRatesForCurrencyDto.class,code);
+                    code.toUpperCase() + LAST_TOP_10, NbpTopRatesForCurrencyDto.class,code);
 
             assert nbpTopRatesForCurrencyDto != null;
             log.info("Currency get successfully");

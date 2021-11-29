@@ -26,6 +26,10 @@ public class CurrencyExtractExcel implements WriteToFile {
       private CurrencyDto currencyDto;
 
 
+    public CurrencyExtractExcel(XSSFWorkbook workbook) {
+        this.workbook = workbook;
+    }
+
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
          workbook = new XSSFWorkbook();
