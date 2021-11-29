@@ -1,16 +1,11 @@
 package pl.creator.currencytoexcel.currency.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import pl.creator.currencytoexcel.currency.RatesDto;
 import java.util.List;
 
 @Getter
-@Setter
-@ToString
-@NoArgsConstructor
-public class CurrencyDto {
+public class NbpTopRatesForCurrencyDto {
     private String table;
     private String currency;
     private String code;
