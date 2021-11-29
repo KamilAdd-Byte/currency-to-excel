@@ -1,39 +1,49 @@
 package pl.creator.currencytoexcel.currency.webclient;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.creator.currencytoexcel.connect.UrlConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.webclient.impl.CurrencyWebClientImpl;
-import java.io.IOException;
-import java.net.URL;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.when;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
 class CurrencyWebClientImplTest {
 
+    CurrencyWebClientImpl currencyWebClient;
 
     @Test
-    void whenWillSetUpUrlByUrlConnectionInterface_thenStatus_200() throws IOException {
+    @DisplayName("should get currency to rest template by nbp api")
+    void shouldGetCurrencyDtoToRestTemplate(){
         //given
-        String someUrl = "https://onet.pl";
+        currencyWebClient = new CurrencyWebClientImpl();
         //when
-        URL url = UrlConnection.setURLToOpenConnection(someUrl);
+        CurrencyDto eur = currencyWebClient.getCurrencyLastTen("EUR");
+        Class<CurrencyWebClientImpl> currencyWebClientClass = CurrencyWebClientImpl.class;
+        Field[] declaredFields = currencyWebClientClass.getDeclaredFields();
+
         //then
-        assertNotNull(url);
-        //assured
-        when()
-                .get(url)
-                .then()
-                .statusCode(200);
+        assertThat(eur.getCode()).isEqualTo("EUR");
+        assertThat(declaredFields).hasSize(6);
     }
 
-    @Test
-    void getCurrencyLastTen() {
-        CurrencyWebClientImpl currencyWebClient = new CurrencyWebClientImpl();
-        CurrencyDto usd = currencyWebClient.getCurrencyLastTen("USD");
-        System.out.println(usd);
 
+    @Test
+    @DisplayName("get connection nbp api top last ten and response status 200")
+    void getUrl_topLastTen_byNbpApi_USDCurrency_status200ok() {
+        //given
+        String urlUsd = "https://api.nbp.pl/api/exchangerates/rates/A/USD/last/10";
+
+        when()
+                .get(urlUsd)
+                .then()
+                .statusCode(200);
     }
 }
