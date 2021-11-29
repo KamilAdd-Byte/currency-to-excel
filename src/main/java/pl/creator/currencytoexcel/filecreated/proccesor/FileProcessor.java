@@ -4,14 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import pl.creator.currencytoexcel.currency.gson.CurrencyConvert;
-import pl.creator.currencytoexcel.currency.model.CurrencyDto;
+import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.filecreated.actions.FileAction;
-import pl.creator.currencytoexcel.workbook.CurrencyPatternWorkbook;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,11 +49,11 @@ public class FileProcessor implements FileAction {
         return workbook;
     }
 
-    private CurrencyDto getCurrency() throws IOException {
-        CurrencyConvert currencyConvert = new CurrencyConvert();
-        URLConnection connection = CurrencyConvert.openConnection("eur");
-        return currencyConvert.convertCurrencyFromJson(connection);
-    }
+//    private CurrencyDto getCurrency() throws IOException {
+//        CurrencyConvert currencyConvert = new CurrencyConvert();
+//        URLConnection connection = CurrencyConvert.openConnection("eur");
+//        return currencyConvert.convertCurrencyFromJson(connection);
+//    }
 
     /**
      * @param workbook exists Excel file created by user

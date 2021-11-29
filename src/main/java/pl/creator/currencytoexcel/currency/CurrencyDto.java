@@ -1,15 +1,12 @@
-package pl.creator.currencytoexcel.currency.model;
+package pl.creator.currencytoexcel.currency;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 import java.util.List;
 
 @Getter
-@Setter
+@Builder
 @ToString
-@NoArgsConstructor
 public class CurrencyDto {
     private String table;
     private String currency;
