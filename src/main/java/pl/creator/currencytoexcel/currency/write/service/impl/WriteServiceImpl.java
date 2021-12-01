@@ -3,7 +3,7 @@ package pl.creator.currencytoexcel.currency.write.service.impl;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
-import pl.creator.currencytoexcel.currency.write.pattern.CurrencyExtractExcel;
+import pl.creator.currencytoexcel.currency.write.extract.CurrencyExtractExcel;
 import pl.creator.currencytoexcel.currency.write.service.WriteService;
 
 @Service

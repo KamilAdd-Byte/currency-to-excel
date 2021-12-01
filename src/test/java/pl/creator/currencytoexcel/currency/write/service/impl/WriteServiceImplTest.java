@@ -8,7 +8,7 @@ import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.service.CurrencyService;
 import pl.creator.currencytoexcel.currency.service.impl.CurrencyServiceImpl;
 import pl.creator.currencytoexcel.currency.webclient.impl.CurrencyWebClientImpl;
-import pl.creator.currencytoexcel.currency.write.pattern.CurrencyExtractExcel;
+import pl.creator.currencytoexcel.currency.write.extract.CurrencyExtractExcel;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest

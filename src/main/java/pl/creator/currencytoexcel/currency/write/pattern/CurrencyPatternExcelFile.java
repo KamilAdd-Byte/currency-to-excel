@@ -2,7 +2,6 @@ package pl.creator.currencytoexcel.currency.write.pattern;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -11,45 +10,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.RatesDto;
 import pl.creator.currencytoexcel.currency.write.WriteToFile;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
-@Setter
-@Getter
 @Slf4j
+@Getter
 @NoArgsConstructor
-public class CurrencyExtractExcel implements WriteToFile {
-      private XSSFWorkbook workbook;
-      private XSSFSheet sheet;
-      private XSSFRow row;
-      private CurrencyDto currencyDto;
+public class CurrencyPatternExcelFile implements WriteToFile {
+    private XSSFWorkbook workbook;
+    private XSSFSheet sheet;
+    private XSSFRow row;
 
-
-    public CurrencyExtractExcel(XSSFWorkbook workbook) {
-        this.workbook = workbook;
-    }
-
-    @Override
-    public XSSFWorkbook createNewExcelFile(String fileName) {
-         workbook = new XSSFWorkbook();
-        if (fileName.toCharArray().length != 0) {
-            try (FileOutputStream fileOutput = new FileOutputStream(fileName + ".xlsx")) {
-                sheet = workbook.createSheet(fileName);
-                exportCurrencyToExcel();
-                workbook.write(fileOutput);
-                workbook.close();
-                log.info("Workbook created successfully");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public XSSFWorkbook createNewWorkbook(String filename){
+        workbook = new XSSFWorkbook();
+        sheet = workbook.createSheet(filename);
         return workbook;
     }
 
     @Override
-    public void setCurrencyToWrite(CurrencyDto currencyDto) {
-        setCurrencyDto(currencyDto);
+    public void exportCurrencyToExcel(CurrencyDto currencyDto) {
+        writeHeaderRow();
+        writeDataRows(currencyDto);
     }
 
     @Override
@@ -80,29 +60,21 @@ public class CurrencyExtractExcel implements WriteToFile {
 
     @Override
     public void writeDataRows(CurrencyDto currencyDto) {
-        int rowCount = 1;
-        int rowCountForRates = 2;
-        writeValueToPatternForCurrencyTopLastTen(currencyDto, rowCount);
-        // get rates
-        getRates(currencyDto, rowCountForRates);
+        if (currencyDto != null){
+            int rowCount = 1;
+            int rowCountForRates = 2;
+            writeValueToPatternForCurrencyTopLastTen(currencyDto, rowCount);
+            // get rates
+            getRates(currencyDto, rowCountForRates);
+            log.info("Currency and ten rates correctly write to file");
+        }else {
+            log.warn("Currency and ten rates not extract");
+        }
     }
 
-    private void writeValueToPatternForCurrencyTopLastTen(CurrencyDto currencyDto, int rowCount) {
-        XSSFRow row = sheet.createRow(rowCount);
-
-        XSSFCell cell = row.createCell(0);
-        cell.setCellValue(currencyDto.getTable());
-
-        cell = row.createCell(1);
-        cell.setCellValue(currencyDto.getCurrency());
-
-        cell = row.createCell(2);
-        cell.setCellValue(currencyDto.getCode());
-    }
 
     private void getRates(CurrencyDto currencyDto, int rowCountForRates) {
         XSSFCell cell;
-        XSSFRow row;
         List<RatesDto> ratesDtos = currencyDto.getRates();
 
         for (RatesDto rate : ratesDtos) {
@@ -119,9 +91,16 @@ public class CurrencyExtractExcel implements WriteToFile {
         }
     }
 
-    @Override
-    public void exportCurrencyToExcel() {
-        writeHeaderRow();
-        writeDataRows(currencyDto);
+    private void writeValueToPatternForCurrencyTopLastTen(CurrencyDto currencyDto, int rowCount) {
+        row = sheet.createRow(rowCount);
+
+        XSSFCell cell = row.createCell(0);
+        cell.setCellValue(currencyDto.getTable());
+
+        cell = row.createCell(1);
+        cell.setCellValue(currencyDto.getCurrency());
+
+        cell = row.createCell(2);
+        cell.setCellValue(currencyDto.getCode());
     }
 }
