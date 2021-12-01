@@ -3,6 +3,8 @@ package pl.creator.currencytoexcel.currency.write.pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -41,7 +43,12 @@ public class CurrencyPatternExcelFile implements WriteToFile {
     private void writePatternForCurrencyTopLastTen() {
         XSSFCell cell = row.createCell(0);
         cell.setCellValue("Tabala");
-
+        Font font = workbook.createFont();
+        font.setFontHeight((short) 24);
+        font.setBold(true);
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        cell.setCellStyle(style);
         cell = row.createCell(1);
         cell.setCellValue("Nazwa");
 
