@@ -18,16 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 class CurrencyWebClientImplTest {
 
-    CurrencyWebClientImpl currencyWebClient;
+    CurrencyWebClientImpl instance;
 
     @BeforeEach
     void getCurrencyWebClientInstance(){
-       currencyWebClient  = new CurrencyWebClientImpl();
+        instance = CurrencyWebClientImpl.getInstance();
+
     }
 
     @AfterEach
-    void setReferenceCurrencyWebClientForNull(){
-        currencyWebClient = null;
+    void setReferenceCurrencyWebClientToNull(){
+        instance = null;
     }
 
     @Test
@@ -35,14 +36,14 @@ class CurrencyWebClientImplTest {
     void shouldGetCurrencyDtoToRestTemplate(){
 
         //given
-        CurrencyDto eur = currencyWebClient.getCurrencyLastTen("EUR");
+        CurrencyDto eur = instance.getCurrencyLastTen("EUR");
         Class<CurrencyWebClientImpl> currencyWebClientClass = CurrencyWebClientImpl.class;
         Field[] declaredFields = currencyWebClientClass.getDeclaredFields();
 
         //then
         assertNotNull(eur);
         assertThat(eur.getCode()).isEqualTo("EUR");
-        assertThat(declaredFields).hasSize(6);
+        assertThat(declaredFields).hasSize(7);
     }
 
 
@@ -62,7 +63,7 @@ class CurrencyWebClientImplTest {
     @DisplayName("should get currency after set code to lower case")
     void shouldGetCurrencyAfterSetCodeToLowerCase(){
         //given
-        CurrencyDto currencyLowerCase = currencyWebClient.getCurrencyLastTen("eur");
+        CurrencyDto currencyLowerCase = instance.getCurrencyLastTen("eur");
 
         //then
         assertNotNull(currencyLowerCase);
@@ -77,6 +78,6 @@ class CurrencyWebClientImplTest {
         String inCorrectCurrencyCode = "us";
 
         //then
-        assertThrows(Exception.class, () -> currencyWebClient.getCurrencyLastTen(inCorrectCurrencyCode));
+        assertThrows(Exception.class, () -> instance.getCurrencyLastTen(inCorrectCurrencyCode));
     }
 }

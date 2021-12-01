@@ -10,12 +10,15 @@ import pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient;
 @Slf4j
 @Component
 public class CurrencyWebClientImpl implements CurrencyWebClient {
+    private static CurrencyWebClientImpl instance;
     //url model: https://api.nbp.pl/api/exchangerates/rates/A/USD/last/10
     private static final  String BASIC_NBP_URL = "https://api.nbp.pl/api/exchangerates/rates";
     private static final String TABLE = "/A/";
     private static final String LAST_TOP_10 = "/last/10";
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    private CurrencyWebClientImpl() { }
 
     /**
      * @param code code its currency code standard ISO 4217
@@ -38,5 +41,12 @@ public class CurrencyWebClientImpl implements CurrencyWebClient {
 
         }
        throw new NullPointerException();
+    }
+
+    public static CurrencyWebClientImpl getInstance(){
+        if (instance == null){
+            instance = new CurrencyWebClientImpl();
+        }
+        return instance;
     }
 }

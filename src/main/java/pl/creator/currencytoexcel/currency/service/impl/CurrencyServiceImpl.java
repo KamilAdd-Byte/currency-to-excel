@@ -4,14 +4,15 @@ import org.springframework.stereotype.Service;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.service.CurrencyService;
 import pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient;
+import pl.creator.currencytoexcel.currency.webclient.impl.CurrencyWebClientImpl;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyWebClient currencyWebClient;
 
-    public CurrencyServiceImpl(CurrencyWebClient currencyWebClient) {
-        this.currencyWebClient = currencyWebClient;
+    public CurrencyServiceImpl(CurrencyWebClientImpl currencyWebClient) {
+        this.currencyWebClient = CurrencyWebClientImpl.getInstance();
     }
     /**
      * @param code code its currency code standard ISO 4217

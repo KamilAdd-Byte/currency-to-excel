@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WriteServiceImplTest {
 
     // get currency
-    CurrencyWebClientImpl client = new CurrencyWebClientImpl();
+    CurrencyWebClientImpl client = CurrencyWebClientImpl.getInstance();
     CurrencyService currencyService = new CurrencyServiceImpl(client);
 
 
