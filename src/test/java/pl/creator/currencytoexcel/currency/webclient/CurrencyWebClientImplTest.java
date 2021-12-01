@@ -1,6 +1,8 @@
 package pl.creator.currencytoexcel.currency.webclient;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,12 +12,23 @@ import java.lang.reflect.Field;
 import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
 @SpringBootTest
 class CurrencyWebClientImplTest {
 
-    CurrencyWebClientImpl currencyWebClient = new CurrencyWebClientImpl();
+    CurrencyWebClientImpl currencyWebClient;
+
+    @BeforeEach
+    void getCurrencyWebClientInstance(){
+       currencyWebClient  = new CurrencyWebClientImpl();
+    }
+
+    @AfterEach
+    void setReferenceCurrencyWebClientForNull(){
+        currencyWebClient = null;
+    }
 
     @Test
     @DisplayName("should get currency to rest template by nbp api")
@@ -55,5 +68,15 @@ class CurrencyWebClientImplTest {
         assertNotNull(currencyLowerCase);
         assertThat(currencyLowerCase.getCode()).isEqualTo("EUR");
         assertThat(currencyLowerCase.getCode()).isNotEqualTo("eur");
+    }
+
+    @Test
+    @DisplayName("should catch exception for incorrect currency code")
+    void shouldCatchExceptionForIncorrectCurrencyCode(){
+        //given
+        String inCorrectCurrencyCode = "us";
+
+        //then
+        assertThrows(Exception.class, () -> currencyWebClient.getCurrencyLastTen(inCorrectCurrencyCode));
     }
 }
