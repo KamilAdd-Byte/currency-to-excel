@@ -15,6 +15,9 @@ public class RestAbstractJsoupProcessorImpl implements RestAbstractJsoupProcesso
     @Autowired
     AbstractJsoupProcessorService abstractJsoupProcessorService;
 
+    /**
+     * @return codes and descriptions currency list
+     */
     @Override
     @GetMapping("file/codes")
     public ResponseEntity<List<String>> getAllCodes() {

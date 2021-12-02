@@ -68,10 +68,10 @@ public class CurrencyPatternForExcelFile extends CurrencyExtractExcel implements
         cell.setCellValue("No");
 
         cell = row.createCell(4);
-        cell.setCellValue("Date");
+        cell.setCellValue("Data");
 
         cell = row.createCell(5);
-        cell.setCellValue("Value");
+        cell.setCellValue("Wartość");
     }
 
     private void setFontAndStyle(XSSFCell cell) {
