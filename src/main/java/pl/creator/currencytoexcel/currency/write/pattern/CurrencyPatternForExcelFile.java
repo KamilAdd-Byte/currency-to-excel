@@ -11,20 +11,34 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
 import pl.creator.currencytoexcel.currency.RatesDto;
-import pl.creator.currencytoexcel.currency.write.WriteToFile;
+import pl.creator.currencytoexcel.currency.write.WritePatternForCurrencyToFile;
+import pl.creator.currencytoexcel.currency.write.extract.CurrencyExtractExcel;
+
 import java.util.List;
 
+/**
+ * This is auxiliary class for write CurrencyDto
+ *
+ */
 @Slf4j
 @Getter
 @NoArgsConstructor
-public class CurrencyPatternExcelFile implements WriteToFile {
+public class CurrencyPatternForExcelFile extends CurrencyExtractExcel implements WritePatternForCurrencyToFile {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
     private XSSFRow row;
 
-    public XSSFWorkbook createNewWorkbook(String filename){
+
+    private CurrencyPatternForExcelFile(String fileName, XSSFWorkbook workbook, CurrencyDto currencyDto) {
+        super(fileName, workbook, currencyDto);
+        this.workbook = workbook;
+    }
+
+    @Override
+    public XSSFWorkbook createNewExcelFile(String fileName) {
         workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet(filename);
+        sheet = workbook.createSheet(fileName);
+        setWorkbook(workbook);
         return workbook;
     }
 
@@ -43,12 +57,7 @@ public class CurrencyPatternExcelFile implements WriteToFile {
     private void writePatternForCurrencyTopLastTen() {
         XSSFCell cell = row.createCell(0);
         cell.setCellValue("Tabala");
-        Font font = workbook.createFont();
-        font.setFontHeight((short) 24);
-        font.setBold(true);
-        CellStyle style = workbook.createCellStyle();
-        style.setFont(font);
-        cell.setCellStyle(style);
+        setFontAndStyle(cell);
         cell = row.createCell(1);
         cell.setCellValue("Nazwa");
 
@@ -63,6 +72,15 @@ public class CurrencyPatternExcelFile implements WriteToFile {
 
         cell = row.createCell(5);
         cell.setCellValue("Value");
+    }
+
+    private void setFontAndStyle(XSSFCell cell) {
+        Font font = workbook.createFont();
+        font.setFontHeight((short) 24);
+        font.setBold(true);
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        cell.setCellStyle(style);
     }
 
     @Override

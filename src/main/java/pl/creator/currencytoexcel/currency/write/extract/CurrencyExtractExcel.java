@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.creator.currencytoexcel.currency.CurrencyDto;
-import pl.creator.currencytoexcel.currency.write.pattern.CurrencyPatternExcelFile;
+import pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient;
+import pl.creator.currencytoexcel.currency.write.model.ExtractExcel;
+import pl.creator.currencytoexcel.currency.write.pattern.CurrencyPatternForExcelFile;
 import pl.creator.currencytoexcel.currency.write.service.WriteService;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -18,7 +17,7 @@ import java.io.IOException;
 @Getter
 @Slf4j
 @NoArgsConstructor
-public class CurrencyExtractExcel implements WriteService {
+public class CurrencyExtractExcel extends ExtractExcel implements WriteService {
       private XSSFWorkbook workbook;
       private CurrencyDto currencyDto;
 
@@ -26,12 +25,19 @@ public class CurrencyExtractExcel implements WriteService {
         this.workbook = workbook;
     }
 
+    public CurrencyExtractExcel(String fileName, XSSFWorkbook workbook, CurrencyDto currencyDto) {
+        super(fileName);
+        this.workbook = workbook;
+        this.currencyDto = currencyDto;
+    }
+
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
-         CurrencyPatternExcelFile currencyPatternExcelFile = new CurrencyPatternExcelFile();
-         workbook = currencyPatternExcelFile.createNewWorkbook(fileName);
+         CurrencyPatternForExcelFile currencyPatternExcelFile = new CurrencyPatternForExcelFile();
+         workbook = currencyPatternExcelFile.createNewExcelFile(fileName);
         if (fileName.toCharArray().length != 0) {
             try (FileOutputStream fileOutput = new FileOutputStream(fileName + ".xlsx")) {
+                workbook  = currencyPatternExcelFile.createNewExcelFile(fileName);
                 currencyPatternExcelFile.exportCurrencyToExcel(currencyDto);
                 workbook.write(fileOutput);
                 workbook.close();
@@ -43,6 +49,10 @@ public class CurrencyExtractExcel implements WriteService {
         return workbook;
     }
 
+    /**
+     * @param currencyDto its dto currency by nbp api
+     * @see CurrencyWebClient
+     */
     @Override
     public void setCurrencyToWrite(CurrencyDto currencyDto) {
         setCurrencyDto(currencyDto);

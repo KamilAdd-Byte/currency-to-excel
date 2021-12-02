@@ -46,7 +46,6 @@ class CurrencyWebClientImplTest {
         assertThat(declaredFields).hasSize(7);
     }
 
-
     @Test
     @DisplayName("get connection nbp api top last ten and response status 200")
     void getUrl_topLastTen_byNbpApi_USDCurrency_status200ok() {

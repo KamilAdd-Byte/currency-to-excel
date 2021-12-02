@@ -11,13 +11,21 @@ public class WriteServiceImpl implements WriteService {
 
     CurrencyExtractExcel currencyExtractExcel = new CurrencyExtractExcel();
 
+    /**
+     * @param fileName name Excel file and sheet set for user
+     * @return new Excel fileName.xlsx
+     */
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
         return this.currencyExtractExcel.createNewExcelFile(fileName);
     }
 
+    /**
+     * @param currencyDto its dto currency by nbp api
+     * @see pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient
+     */
     @Override
     public void setCurrencyToWrite(CurrencyDto currencyDto) {
-        this.currencyExtractExcel.setCurrencyDto(currencyDto);
+        this.currencyExtractExcel.setCurrencyToWrite(currencyDto);
     }
 }
