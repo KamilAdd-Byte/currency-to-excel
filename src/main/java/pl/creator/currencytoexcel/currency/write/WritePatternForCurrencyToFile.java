@@ -8,12 +8,12 @@ public interface WritePatternForCurrencyToFile extends CreateExcelFile {
     void writeHeaderRow();
 
     /**
-     * @param currencyDto CurrencyDto if exists
+     * @param currencyDto currency if exists
      */
     void writeDataRows(CurrencyDto currencyDto);
 
     /**
-     * @param currencyDto CurrencyDto if exists
+     * @param currencyDto currency if exists
      */
     void exportCurrencyToExcel(CurrencyDto currencyDto);
 }

@@ -23,22 +23,22 @@ import java.util.List;
 @Slf4j
 @Getter
 @NoArgsConstructor
-public class CurrencyPatternForExcelFile extends CurrencyExtractExcel implements WritePatternForCurrencyToFile {
+public class CurrencyPatternForExcelFile implements WritePatternForCurrencyToFile {
+    private CurrencyDto currencyDto;
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
     private XSSFRow row;
 
 
-    private CurrencyPatternForExcelFile(String fileName, XSSFWorkbook workbook, CurrencyDto currencyDto) {
-        super(fileName, workbook, currencyDto);
+    public CurrencyPatternForExcelFile(XSSFWorkbook workbook, CurrencyDto currencyDto) {
         this.workbook = workbook;
+        this.currencyDto = currencyDto;
     }
 
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(fileName);
-        setWorkbook(workbook);
         return workbook;
     }
 
@@ -93,7 +93,7 @@ public class CurrencyPatternForExcelFile extends CurrencyExtractExcel implements
             getRates(currencyDto, rowCountForRates);
             log.info("Currency and ten rates correctly write to file");
         }else {
-            log.warn("Currency and ten rates not extract");
+            log.warn("Currency and ten rates not extracted");
         }
     }
 
