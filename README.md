@@ -10,13 +10,14 @@ RestAssured
 
 Swagger
 
-## endpoint ready to use
+Jsoup
 
-/file/{fileName}/{code}
+# endpoint ready to use
 
-## next step
+## /file/{fileName}/{code}  -  create and write currency to Excel file by code
+## **/file/codes**  -  get list all codes
 
-- format row ?
+
 
 
 
