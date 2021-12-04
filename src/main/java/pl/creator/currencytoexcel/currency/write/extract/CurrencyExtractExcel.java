@@ -10,6 +10,7 @@ import pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient;
 import pl.creator.currencytoexcel.currency.write.model.ExtractExcel;
 import pl.creator.currencytoexcel.currency.write.pattern.CurrencyPatternForExcelFile;
 import pl.creator.currencytoexcel.currency.write.service.WriteService;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -18,10 +19,11 @@ import java.io.IOException;
 @Slf4j
 @NoArgsConstructor
 public class CurrencyExtractExcel extends ExtractExcel implements WriteService {
-      private XSSFWorkbook workbook;
-      private CurrencyDto currencyDto;
+    private CurrencyPatternForExcelFile currencyForExcelFile; //composition
+    private XSSFWorkbook workbook;
+    private CurrencyDto currencyDto;
 
-    public CurrencyExtractExcel(XSSFWorkbook workbook) {
+    private CurrencyExtractExcel(XSSFWorkbook workbook) {
         this.workbook = workbook;
     }
 
@@ -33,12 +35,11 @@ public class CurrencyExtractExcel extends ExtractExcel implements WriteService {
 
     @Override
     public XSSFWorkbook createNewExcelFile(String fileName) {
-         CurrencyPatternForExcelFile currencyPatternExcelFile = new CurrencyPatternForExcelFile();
-         workbook = currencyPatternExcelFile.createNewExcelFile(fileName);
+        currencyForExcelFile = new CurrencyPatternForExcelFile();
         if (fileName.toCharArray().length != 0) {
             try (FileOutputStream fileOutput = new FileOutputStream(fileName + ".xlsx")) {
-                workbook  = currencyPatternExcelFile.createNewExcelFile(fileName);
-                currencyPatternExcelFile.exportCurrencyToExcel(currencyDto);
+                workbook = currencyForExcelFile.createNewExcelFile(fileName);
+                currencyForExcelFile.exportCurrencyToExcel(currencyDto);
                 workbook.write(fileOutput);
                 workbook.close();
                 log.info("Workbook created successfully");

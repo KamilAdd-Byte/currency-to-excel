@@ -12,11 +12,11 @@ public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyWebClient currencyWebClient;
 
     public CurrencyServiceImpl(CurrencyWebClientImpl currencyWebClient) {
-        this.currencyWebClient = CurrencyWebClientImpl.getInstance();
+        this.currencyWebClient = currencyWebClient;
     }
     /**
-     * @param code code its currency code standard ISO 4217
-     * @return CurrencyDto object get to nbp api
+     * @param code it's currency code standard ISO 4217
+     * @return CurrencyDto object get to nbp api by rest template
      */
     @Override
     public CurrencyDto getCurrencyLastTen(String code) {

@@ -1,6 +1,8 @@
 package pl.creator.currencytoexcel.currency.write.service.impl;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,10 +16,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class WriteServiceImplTest {
 
-    // get currency
-    CurrencyWebClientImpl client = CurrencyWebClientImpl.getInstance();
-    CurrencyService currencyService = new CurrencyServiceImpl(client);
+    private CurrencyService currencyService;
 
+    @BeforeEach
+    void connect (){
+        // get currency
+        CurrencyWebClientImpl client = CurrencyWebClientImpl.getInstance();
+        currencyService = new CurrencyServiceImpl(client);
+    }
+
+    @AfterEach
+    void clean (){
+        currencyService = null;
+    }
 
     @Test
     @DisplayName("should create new excel file for name given by user")
