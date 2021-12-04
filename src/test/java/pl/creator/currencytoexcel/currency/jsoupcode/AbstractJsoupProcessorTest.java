@@ -3,6 +3,9 @@ package pl.creator.currencytoexcel.currency.jsoupcode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -27,12 +30,15 @@ class AbstractJsoupProcessorTest {
     @Test
     @DisplayName("get list codes with wikipedia by jsoup scrapping")
     void getListCodes_withWikipedia_byJsoupScrapping(){
-
+        List<String> strings = AbstractJsoupProcessor.allCodesIso4217();
+        for (String string : strings) {
+            System.out.println(string);
+        }
         //then
         assertNotNull(AbstractJsoupProcessor.allCodesIso4217());
         assertAll(
                 () -> assertThat(AbstractJsoupProcessor.allCodesIso4217(),notNullValue()),
-                () -> assertThat(AbstractJsoupProcessor.allCodesIso4217(),hasSize(540))
+                () -> assertThat(AbstractJsoupProcessor.allCodesIso4217(),hasSize(1076))
           );
     }
 }

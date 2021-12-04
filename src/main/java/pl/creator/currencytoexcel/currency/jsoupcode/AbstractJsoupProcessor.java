@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 public abstract class AbstractJsoupProcessor {
-    private static final String URL_BASIC_CODE_CURRENCY = "https://pl.wikipedia.org/wiki/ISO_4217";
+    private static final String URL_BASIC_CODE_CURRENCY = "https://www.iban.pl/currency-codes";
     private static List<String> codes;
 
     public static String getUrlBasicCodeCurrency(){
@@ -26,8 +26,7 @@ public abstract class AbstractJsoupProcessor {
         }
         try {
             Document document = Jsoup.connect(URL_BASIC_CODE_CURRENCY).get();
-            Elements elements_codes = document.getElementsByClass("wikitable sortable");
-            Elements elementsByTag = document.getElementsByTag("p");
+            Elements elements_codes = document.getElementsByClass("table table-bordered downloads tablesorter");
             for (Element elements_code : elements_codes.select("tr")) {
                 codes.add(elements_code.text());
             }
