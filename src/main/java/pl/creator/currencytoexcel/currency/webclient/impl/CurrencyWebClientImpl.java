@@ -13,7 +13,9 @@ public class CurrencyWebClientImpl implements CurrencyWebClient {
     private static CurrencyWebClientImpl instance;
     //url model: https://api.nbp.pl/api/exchangerates/rates/A/USD/last/10
     private static final  String BASIC_NBP_URL = "https://api.nbp.pl/api/exchangerates/rates";
-    private static final String TABLE = "/A/";
+    private static final String TABLE_A = "/A/";
+    private static final String TABLE_B = "/B/";
+    private static final String TABLE_C = "/C/";
     private static final String LAST_TOP_10 = "/last/10";
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -21,13 +23,17 @@ public class CurrencyWebClientImpl implements CurrencyWebClient {
     private CurrencyWebClientImpl() { }
 
     /**
-     * @param code code its currency code standard ISO 4217
-     * @return CurrencyDto object get to nbp api
+     * @param code are the three characters that make up the currency code standard ISO 4217
+     * @return currency and ten rates get to nbp api by rest template from table A
      */
     @Override
-    public CurrencyDto getCurrencyLastTen(String code) {
+    public CurrencyDto getCurrencyLastTenTableA(String code) {
+        return getCurrencyDto(code, TABLE_A);
+    }
+
+    private CurrencyDto getCurrencyDto(String code, String table) {
         if (code.length()==3){
-            NbpTopRatesForCurrencyDto nbpTopRatesForCurrencyDto = restTemplate.getForObject(BASIC_NBP_URL + TABLE +
+            NbpTopRatesForCurrencyDto nbpTopRatesForCurrencyDto = restTemplate.getForObject(BASIC_NBP_URL + table +
                     code.toUpperCase() + LAST_TOP_10, NbpTopRatesForCurrencyDto.class,code);
 
             assert nbpTopRatesForCurrencyDto != null;
@@ -40,7 +46,26 @@ public class CurrencyWebClientImpl implements CurrencyWebClient {
                     .build();
 
         }
-       throw new NullPointerException();
+        throw new NullPointerException();
+    }
+
+    /**
+     * @param code are the three characters that make up the currency code standard ISO 4217
+     * @return currency and ten rates get to nbp api by rest template from table B
+     */
+    @Override
+    public CurrencyDto getCurrencyLastTenTableB(String code) {
+        return getCurrencyDto(code, TABLE_B);
+    }
+
+
+    /**
+     * @param code are the three characters that make up the currency code standard ISO 4217
+     * @return currency and ten rates get to nbp api by rest template from table C
+     */
+    @Override
+    public CurrencyDto getCurrencyLastTenTableC(String code) {
+        return getCurrencyDto(code, TABLE_C);
     }
 
     public static CurrencyWebClientImpl getInstance(){

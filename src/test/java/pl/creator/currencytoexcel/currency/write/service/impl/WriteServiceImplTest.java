@@ -34,7 +34,7 @@ class WriteServiceImplTest {
     @DisplayName("should create new excel file for name given by user")
     void shouldCreateNewExcelFileForNameGivenByUser() {
         //given
-        CurrencyDto lastTen = currencyService.getCurrencyLastTen("eur");
+        CurrencyDto lastTen = currencyService.getCurrencyLastTenForTableB("eur");
         CurrencyExtractExcel extractExcel = new CurrencyExtractExcel();
         extractExcel.setCurrencyDto(lastTen);
         String fileName = "Test_Name";

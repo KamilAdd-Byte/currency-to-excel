@@ -36,14 +36,14 @@ class CurrencyWebClientImplTest {
     void shouldGetCurrencyDtoToRestTemplate(){
 
         //given
-        CurrencyDto eur = instance.getCurrencyLastTen("EUR");
+        CurrencyDto eur = instance.getCurrencyLastTenTableA("EUR");
         Class<CurrencyWebClientImpl> currencyWebClientClass = CurrencyWebClientImpl.class;
         Field[] declaredFields = currencyWebClientClass.getDeclaredFields();
 
         //then
         assertNotNull(eur);
         assertThat(eur.getCode()).isEqualTo("EUR");
-        assertThat(declaredFields).hasSize(7);
+        assertThat(declaredFields).hasSize(9);
     }
 
     @Test
@@ -62,7 +62,7 @@ class CurrencyWebClientImplTest {
     @DisplayName("should get currency after set code to lower case")
     void shouldGetCurrencyAfterSetCodeToLowerCase(){
         //given
-        CurrencyDto currencyLowerCase = instance.getCurrencyLastTen("eur");
+        CurrencyDto currencyLowerCase = instance.getCurrencyLastTenTableA("eur");
 
         //then
         assertNotNull(currencyLowerCase);
@@ -77,6 +77,6 @@ class CurrencyWebClientImplTest {
         String inCorrectCurrencyCode = "us";
 
         //then
-        assertThrows(Exception.class, () -> instance.getCurrencyLastTen(inCorrectCurrencyCode));
+        assertThrows(Exception.class, () -> instance.getCurrencyLastTenTableA(inCorrectCurrencyCode));
     }
 }

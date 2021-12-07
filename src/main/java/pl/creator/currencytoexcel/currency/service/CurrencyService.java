@@ -5,5 +5,6 @@ import pl.creator.currencytoexcel.currency.CurrencyDto;
 
 @Service
 public interface CurrencyService {
-    CurrencyDto getCurrencyLastTen(String code);
+    CurrencyDto getCurrencyLastTenForTableA(String code);
+    CurrencyDto getCurrencyLastTenForTableB(String code);
 }

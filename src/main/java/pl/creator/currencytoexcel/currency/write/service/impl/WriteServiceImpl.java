@@ -21,7 +21,7 @@ public class WriteServiceImpl implements WriteService {
     }
 
     /**
-     * @param currencyDto it's currency last ten by nbp api
+     * @param currencyDto currency and ten rates get to nbp api by rest template
      * @see pl.creator.currencytoexcel.currency.webclient.CurrencyWebClient
      */
     @Override

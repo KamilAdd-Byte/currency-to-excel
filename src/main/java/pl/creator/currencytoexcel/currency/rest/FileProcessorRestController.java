@@ -18,11 +18,12 @@ public class FileProcessorRestController {
 
     /**
      * @param fileName it's name file by user request
-     * @return String title Excel file and sheet
+     * @param code are the three characters that make up the currency code standard ISO 4217
+     * @return currency and ten rates get to nbp api by rest template from table B
      */
     @PostMapping(path = "/file/{fileName}/{code}")
     public ResponseEntity<CurrencyDto> createNewExcelFile(@PathVariable("fileName") String fileName, @PathVariable("code") String code) {
-        CurrencyDto currencyDto = currencyService.getCurrencyLastTen(code);
+        CurrencyDto currencyDto = currencyService.getCurrencyLastTenForTableB(code);
         writeService.setCurrencyToWrite(currencyDto);
         writeService.createNewExcelFile(fileName);
         return ResponseEntity.ok().body(currencyDto);
